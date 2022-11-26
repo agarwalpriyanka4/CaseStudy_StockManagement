@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exceptions.CompanyAlreadyExistException;
 import com.example.demo.model.Company;
+import com.example.demo.model.Stock;
 import com.example.demo.service.CompanyService;
 import com.example.demo.service.StockService;
 
@@ -26,8 +28,8 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
     
-   // @Autowired
-   // private StockService stockService;
+    @Autowired
+    private StockService stockService;
     
     @PostMapping("/company/register")
     public ResponseEntity<?> addCompanyDetails(@RequestBody Company company) throws CompanyAlreadyExistException
@@ -58,7 +60,11 @@ public class CompanyController {
     	List<Company> companyList=companyService.getCompanyDetails();
     	if(companyList!=null)
     	{
-
+            for(Company c:companyList)
+            {
+            	Set<Stock> stockSet=stockService.getStockList(c.getCompanyCode());
+            	c.setStockList(stockSet);
+            }
 			return new ResponseEntity<List<Company>>(companyList, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Company Details does not Exist", HttpStatus.NO_CONTENT);
@@ -68,7 +74,7 @@ public class CompanyController {
     @DeleteMapping("/company/delete/{companyCode}")
     public ResponseEntity<?> deleteCompany(@PathVariable int companyCode)
 	{
-    if(companyService.deleteCompany(companyCode)==true)
+    if(stockService.deleteStock(companyCode)&companyService.deleteCompany(companyCode))
     {
     	return new ResponseEntity<String>("Company Detail deleted", HttpStatus.OK);
     }
@@ -78,10 +84,13 @@ public class CompanyController {
     @PutMapping("/company/put/{companyCode}")
     public ResponseEntity<?> updateCompany(@PathVariable int companyCode, @RequestBody Company company)
     {
+    	if(companyService.getCompanyById(companyCode)!=null)
+    	{
     	boolean flag=companyService.updateCompany(company);
     	if(flag==true)
     	{
     		return new ResponseEntity<String>("Company Detail updated", HttpStatus.OK);
+    	}
     	}
     	return new ResponseEntity<String>("Company Detail not present", HttpStatus.INTERNAL_SERVER_ERROR);
     }
