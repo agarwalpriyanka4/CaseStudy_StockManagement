@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+//import javax.persistence.Transient;
 
 @Entity
 public class Stock {
@@ -15,6 +18,7 @@ public class Stock {
 	private Float stockPrice;
 	private Date timestamp;
 	private Integer companyCode_fk;
+	
 	public Integer getTransactionId() {
 		return transactionId;
 	}
@@ -24,9 +28,15 @@ public class Stock {
 	public Float getStockPrice() {
 		return stockPrice;
 	}
-	public void setStockPrice(Float stockPrice) {
+	public void setStockPrice(Float stockPrice){
+		//if(stockPrice>10)
+	//	{
+	//		this.errorList.add("Stock price is less than 10");
+	//	}
+		
 		this.stockPrice = stockPrice;
 	}
+	
 	public Date getTimestamp() {
 		return timestamp;
 	}

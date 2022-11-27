@@ -1,18 +1,22 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Company {
 
 	@Id
-	@GeneratedValue
 	private Integer companyCode;
+	
+	
 	private String companyName;
 	private String companyCEO;
 	private Integer companyTurnover;
@@ -24,7 +28,8 @@ public class Company {
 	@OneToMany(targetEntity=Stock.class)
 	private Set<Stock> stockList;
 	
-	
+	//@Transient
+	//private List<String> errorList=new ArrayList<String>();
 	public Integer getCompanyCode() {
 		return companyCode;
 	}

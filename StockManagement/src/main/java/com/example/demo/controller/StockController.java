@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class StockController {
 	@PostMapping("/stock/add/{companyCode}")
 	public ResponseEntity<?> addStock(@PathVariable int companyCode,@RequestBody Stock stock)
 	{
+				
 		Company existObj=companyService.getCompanyById(companyCode);
 		if(existObj!=null)
 		{

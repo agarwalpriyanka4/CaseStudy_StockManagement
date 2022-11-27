@@ -8,6 +8,8 @@ public interface UserService {
    
 	public List<User> getAllUsers();
 	
+	public User getUserById(int userId);
+	
 	public User addUser(User user);
 	
 	public boolean validateUser(String username,String password);

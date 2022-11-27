@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,16 @@ public class UserServiceImpl implements UserService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public User getUserById(int userId) {
+	Optional<User> user=userRepo.findById(userId);
+	if(user.isPresent())
+	{
+		return user.get();
+	}
+		return null;
 	}
 
 }

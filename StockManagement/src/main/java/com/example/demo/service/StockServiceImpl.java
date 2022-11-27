@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,11 @@ public class StockServiceImpl implements StockService{
 
 	@Override
 	public boolean addStock(Stock stock) {
+		Date date = new Date();
+		//SimpleDateFormat DateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		//String stringDate = DateFor.format(date);
+		stock.setTimestamp(date);
+	
 		if(stockRepo.saveAndFlush(stock)!=null)
 		{
 			return true;

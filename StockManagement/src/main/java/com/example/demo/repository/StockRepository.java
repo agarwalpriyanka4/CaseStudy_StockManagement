@@ -15,7 +15,7 @@ import com.example.demo.model.Stock;
 @Transactional
 public interface StockRepository  extends JpaRepository<Stock,Integer>{
 	
-	@Query(value="select stk from Stock stk where stk.companyCode_fk= :companyCode")
+	@Query(value="select stk from Stock stk where stk.companyCode_fk= :companyCode order by timestamp desc")
 	public Set<Stock> getStockList(int companyCode);
 	
 	@Modifying

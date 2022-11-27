@@ -46,12 +46,14 @@ public class CompanyServiceImpl implements CompanyService{
 		{
 			return companyRepo.saveAndFlush(company);
 		}
+		
 	}
 
 	@Override
 	public boolean deleteCompany(int companyCode) {
 		if(companyCode!=0)
 		{
+			//companyRepo.deleteStockList(companyCode);
 			companyRepo.deleteById(companyCode);
 			return true;
 		}
