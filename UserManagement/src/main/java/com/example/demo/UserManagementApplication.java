@@ -15,7 +15,7 @@ public class UserManagementApplication {
 	{
 		FilterRegistrationBean filterBean=new FilterRegistrationBean();
 		filterBean.setFilter(new JWTFilter());
-		filterBean.addUrlPatterns("api/v1/user/*");
+		filterBean.addUrlPatterns("/api/v1/user/*");
 		return filterBean;
 	}
 

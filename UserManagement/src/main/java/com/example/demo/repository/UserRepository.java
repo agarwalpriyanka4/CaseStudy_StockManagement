@@ -12,6 +12,6 @@ import com.example.demo.model.User;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Integer>{
 
-	@Query(value="Select u from User where u.username= :username and u.password= :password")
+	@Query(value="Select u from User u where u.username= :username and u.password= :password")
 	public User validateUser(String username, String password);
 }
