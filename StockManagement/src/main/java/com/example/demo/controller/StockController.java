@@ -32,9 +32,14 @@ public class StockController {
 	{
 				
 		Company existObj=companyService.getCompanyById(companyCode);
+		if(companyCode!=stock.getCompanyCode_fk())
+		{
+			return new ResponseEntity<String>("Invalid company codes combination", HttpStatus.BAD_REQUEST);
+		}
 		if(existObj!=null)
 		{
 			existObj.setLatestStockPrice(stock.getStockPrice());
+			//stock.setCompanyCode_fk(companyCode);
 			if(companyService.updateCompany(existObj)& stockService.addStock(stock))
 			{
 				//Set<Stock> stockSet=(stockService.getStockList(companyCode));
