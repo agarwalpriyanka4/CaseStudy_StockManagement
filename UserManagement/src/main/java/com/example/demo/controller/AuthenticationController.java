@@ -49,13 +49,13 @@ public class AuthenticationController {
 		}
 		boolean flag= userService.validateUser(username, password);
 		
-		if(flag)
+		if(!flag)
 		{
-			jwtToken=Jwts.builder().setSubject(username).setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis()+60000000)).signWith(SignatureAlgorithm.HS256, "Secret Key").compact();
+			throw new ServletException("Invalid Credentials");
 		}
 		else
 		{
-			throw new ServletException("Invalid Credentials");
+			jwtToken=Jwts.builder().setSubject(username).setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis()+60000000)).signWith(SignatureAlgorithm.HS256, "Secret Key").compact();
 		}
 		return jwtToken;
 	}

@@ -34,11 +34,6 @@ public class CompanyController {
     @PostMapping("/company/register")
     public ResponseEntity<?> addCompanyDetails(@RequestBody Company company) throws CompanyAlreadyExistException
     {
-    	//if(company.getErrorList().size()>0)
-		//{
-		//	return new ResponseEntity<List<String>>(company.getErrorList(), HttpStatus.BAD_REQUEST);
-		//}
-		
     	if(companyService.addCompanyDetails(company)!=null)
     	{
     		return new ResponseEntity<Company>(company, HttpStatus.CREATED);
@@ -57,8 +52,8 @@ public class CompanyController {
 			return new ResponseEntity<Company>(company, HttpStatus.OK);
 		}
 		else
-		return new ResponseEntity<String>("Company Detail does not Exist", HttpStatus.NO_CONTENT);
-		//return new ResponseEntity<String>("Company Detail corresponding to given Company code does not Exist", HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		//return new ResponseEntity<String>("Company Detail does not Exist", HttpStatus.NO_CONTENT);
 	}
     
     @GetMapping("/company/info/getAll")
@@ -81,12 +76,13 @@ public class CompanyController {
     @DeleteMapping("/company/delete/{companyCode}")
     public ResponseEntity<?> deleteCompany(@PathVariable int companyCode)
 	{
-    if(stockService.deleteStock(companyCode) & companyService.deleteCompany(companyCode))
+  //  if(stockService.deleteStock(companyCode) & companyService.deleteCompany(companyCode))
+    	if(companyService.deleteCompany(companyCode) & stockService.deleteStock(companyCode))
     {
     	return new ResponseEntity<String>("Company Detail deleted", HttpStatus.OK);
     }
-    return new ResponseEntity<String>("Company Detail not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
-   // return new ResponseEntity<String>("Company Detail corresponding to given Company code does not Exist", HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+   // return new ResponseEntity<String>("Company Detail not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     
     @PutMapping("/company/put/{companyCode}")

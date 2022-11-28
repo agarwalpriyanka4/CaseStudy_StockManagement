@@ -10,14 +10,14 @@ import com.example.demo.filter.JWTFilter;
 @SpringBootApplication
 public class UserManagementApplication {
 	
-	@Bean
-	public FilterRegistrationBean jwtFilter()
+		@Bean
+    public FilterRegistrationBean jwtFilter()
 	{
 		FilterRegistrationBean filterBean=new FilterRegistrationBean();
 		filterBean.setFilter(new JWTFilter());
 		filterBean.addUrlPatterns("/api/v1/user/*");
 		return filterBean;
-	}
+	} 
 
 	public static void main(String[] args) {
 		SpringApplication.run(UserManagementApplication.class, args);

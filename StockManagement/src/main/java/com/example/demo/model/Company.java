@@ -16,7 +16,6 @@ public class Company {
 	@Id
 	private Integer companyCode;
 	
-	
 	private String companyName;
 	private String companyCEO;
 	private Integer companyTurnover;
