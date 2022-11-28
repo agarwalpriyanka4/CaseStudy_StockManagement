@@ -30,7 +30,7 @@ public class JWTFilter extends GenericFilterBean{
 		Claims claims =Jwts.parser().setSigningKey("Secret Key").parseClaimsJws(jwtToken).getBody();
 		
 		httpReq.setAttribute("username", claims);
-		chain.doFilter(request, response);
+		chain.doFilter(httpReq, httpRes);
 		
 }
 }

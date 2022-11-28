@@ -1,4 +1,4 @@
-package com.example.demo.model;
+/*package com.example.demo.model;
 
 public class UserDTO {
 	
@@ -19,3 +19,4 @@ public class UserDTO {
 	
 
 }
+*/

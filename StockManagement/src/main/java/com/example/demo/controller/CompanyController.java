@@ -34,6 +34,14 @@ public class CompanyController {
     @PostMapping("/company/register")
     public ResponseEntity<?> addCompanyDetails(@RequestBody Company company) throws CompanyAlreadyExistException
     {
+    if(company==null)
+    {
+    	return new ResponseEntity<String>("No data found", HttpStatus.BAD_REQUEST);
+    }
+    if(company.getCompanyCEO()==null || company.getCompanyName()==null || company.getCompanyTurnover()==null || company.getCompanyTurnover() <1000000000 || company.getCompanyWebsite()==null || company.getStockExchange()==null)
+    {
+    	return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     	if(companyService.addCompanyDetails(company)!=null)
     	{
     		return new ResponseEntity<Company>(company, HttpStatus.CREATED);
@@ -88,6 +96,10 @@ public class CompanyController {
     @PutMapping("/company/put/{companyCode}")
     public ResponseEntity<?> updateCompany(@PathVariable int companyCode, @RequestBody Company company)
     {
+    	if(company.getCompanyCode() !=companyCode)
+    	{
+    		return new ResponseEntity<String>("Company Codes not matched", HttpStatus.BAD_REQUEST);
+    	}
     	if(companyService.getCompanyById(companyCode)!=null)
     	{
     	boolean flag=companyService.updateCompany(company);
