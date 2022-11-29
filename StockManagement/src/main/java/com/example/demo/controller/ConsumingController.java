@@ -1,5 +1,6 @@
-/*package com.example.demo.controller;
+package com.example.demo.controller;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-
-import org.hibernate.mapping.Map;
+import java.util.Map;
 
 import com.example.demo.model.UserDTO;
 
@@ -28,20 +28,22 @@ public class ConsumingController {
 		//@RequestBody UserDto user
 		RestTemplate restTemplate=new RestTemplate();
 		String baseUrl="http://localhost:8081/auth/v1/user/login";
-		ResponseEntity<String> response= null;
+		ResponseEntity<Map<String,String>> response= null;
 		
 		try
 		{
 			
-			HashMap<String,String> request = new HashMap<String,String>();
+			/*HashMap<String,String> request = new HashMap<String,String>();
 			request.put("username", user.getUsername());
 			request.put("password", user.getPassword());
 			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
-	
-			//response= restTemplate.exchange(baseUrl,HttpMethod.GET, getHeaders(),String.class);HashMap<String,String>
-			response=restTemplate.postForEntity(baseUrl, entity, String.class);
+			headers.setContentType(MediaType.APPLICATION_JSON);*/
+			//HttpEntity<String> entity = new HttpEntity<String>(user, headers);
+		//	HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
+	 //        response=restTemplate.postForEntity(baseUrl, HttpMethod.POST, String.class)
+			response= restTemplate.exchange(baseUrl,HttpMethod.POST, getHeaders(user),
+					    new ParameterizedTypeReference<Map<String, String>>() {});
+		//	response=restTemplate.postForEntity(baseUrl, entity, String.class);
 					return new ResponseEntity<>(response,HttpStatus.OK);
 		}
 		catch(Exception e)
@@ -51,14 +53,13 @@ public class ConsumingController {
 		return new ResponseEntity<String>("Response object is null", HttpStatus.NO_CONTENT);
 		
 	}
-	private static HttpEntity<?> getHeaders() throws Exception
+	private static HttpEntity<UserDTO> getHeaders(UserDTO user) throws Exception
 	{
 		HttpHeaders headers =new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 		//headers.set("Access-Control-Allow-Origin", "*");
-		return new HttpEntity<>(headers);
+		return new HttpEntity<UserDTO>(user,headers);
 		
 	}
 
-}
-*/
+} 
