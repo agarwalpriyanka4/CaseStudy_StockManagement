@@ -21,7 +21,10 @@ import com.example.demo.model.Stock;
 import com.example.demo.service.CompanyService;
 import com.example.demo.service.StockService;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @RestController
+//@"SecurityRequirement(value="=")
 @RequestMapping("api/v1.0/market")
 public class CompanyController {
 	
@@ -81,6 +84,7 @@ public class CompanyController {
     	
 	}
     
+    @Hidden
     @DeleteMapping("/company/delete/{companyCode}")
     public ResponseEntity<?> deleteCompany(@PathVariable int companyCode)
 	{
