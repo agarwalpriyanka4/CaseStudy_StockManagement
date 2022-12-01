@@ -25,7 +25,7 @@ public class ConsumingController {
 	@PostMapping("/getLogin")
 	public ResponseEntity<?> consumeLogin(@RequestBody UserDTO user) throws Exception
 	{
-		//@RequestBody UserDto user
+		
 		RestTemplate restTemplate=new RestTemplate();
 		String baseUrl="http://localhost:8081/auth/v1/user/login";
 		ResponseEntity<Map<String,String>> response= null;
@@ -33,17 +33,10 @@ public class ConsumingController {
 		try
 		{
 			
-			/*HashMap<String,String> request = new HashMap<String,String>();
-			request.put("username", user.getUsername());
-			request.put("password", user.getPassword());
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);*/
-			//HttpEntity<String> entity = new HttpEntity<String>(user, headers);
-		//	HttpEntity<String> entity = new HttpEntity<String>(request.toString(), headers);
-	 //        response=restTemplate.postForEntity(baseUrl, HttpMethod.POST, String.class)
+			
 			response= restTemplate.exchange(baseUrl,HttpMethod.POST, getHeaders(user),
 					    new ParameterizedTypeReference<Map<String, String>>() {});
-		//	response=restTemplate.postForEntity(baseUrl, entity, String.class);
+		
 					return new ResponseEntity<>(response,HttpStatus.OK);
 		}
 		catch(Exception e)
@@ -57,7 +50,7 @@ public class ConsumingController {
 	{
 		HttpHeaders headers =new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-		//headers.set("Access-Control-Allow-Origin", "*");
+		
 		return new HttpEntity<UserDTO>(user,headers);
 		
 	}

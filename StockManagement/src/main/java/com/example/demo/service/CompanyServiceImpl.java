@@ -53,7 +53,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public boolean deleteCompany(int companyCode) {
 		if(companyCode!=0)
 		{
-			//companyRepo.deleteStockList(companyCode);
+			
 			companyRepo.deleteById(companyCode);
 			return true;
 		}

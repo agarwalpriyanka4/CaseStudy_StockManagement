@@ -100,27 +100,6 @@ private List<Company> companyList=new ArrayList<Company>();
 	 } 
 	
 	
-/*	@Test
-	 public void getCompanyDetailsFail() throws Exception
-	 {
-		 Company company=new Company();
-			
-			Stock stock=new Stock();
-			
-			Set<Stock> stockList=new HashSet<Stock>();
-			stockList.add(stock);
-			company.setStockList(stockList);
-			
-			companyList.add(company);
-			doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
-			when(companyServiceImpl.getCompanyDetails()).thenReturn(companyList);
-			when(stockServiceImpl.getStockList(company.getCompanyCode())).thenReturn(stockList);
-			List<Company> list1=companyServiceImpl.getCompanyDetails();
-		assertNull(list1);
-		
-		mockmvc.perform(MockMvcRequestBuilders.get("/api/v1.0/market/company/info/getAll")
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNoContent());
-	 } */
 
  @Test
  public void addCompanyDetails() throws Exception
@@ -133,12 +112,8 @@ private List<Company> companyList=new ArrayList<Company>();
 		company.setCompanyWebsite("abc@def.com");
 		company.setStockExchange("NSE");
 		when(companyServiceImpl.addCompanyDetails(any())).thenReturn(company);
-		//when(companyServiceImpl.addCompanyDetails(company)).thenReturn(company);
 		Company actual=companyServiceImpl.addCompanyDetails(company);
 		assertEquals(company,actual);
-		//System.out.println(new ObjectMapper().writeValueAsString(company));
-		//mockmvc.perform(MockMvcRequestBuilders.post("/api/v1.0/market/company/register").contentType(MediaType.APPLICATION_JSON)
-		//		.content(new ObjectMapper().writeValueAsString(company))).andExpect(MockMvcResultMatchers.status().isCreated());
 		
 		mockmvc.perform(MockMvcRequestBuilders.post("/api/v1.0/market/company/register")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -161,32 +136,10 @@ private List<Company> companyList=new ArrayList<Company>();
 		//when(companyServiceImpl.addCompanyDetails(company)).thenReturn(company);
 		Company actual=companyServiceImpl.addCompanyDetails(company);
 		assertNull(actual);
-		System.out.println(new ObjectMapper().writeValueAsString(company));
-		//mockmvc.perform(MockMvcRequestBuilders.post("/api/v1.0/market/company/register").contentType(MediaType.APPLICATION_JSON)
-		//		.content(new ObjectMapper().writeValueAsString(company))).andExpect(MockMvcResultMatchers.status().isCreated());
-		
+		System.out.println(new ObjectMapper().writeValueAsString(company));		
 		mockmvc.perform(MockMvcRequestBuilders.post("/api/v1.0/market/company/register").contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(company))).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isConflict());
 		
  }
  
- /*@Test
- public void deleteCompany() throws Exception
- {
-	 Company company=new Company();
-	 company.setCompanyCode(1); //expected
-		company.setCompanyCEO("Peter");
-		company.setCompanyName("ABC");
-		company.setCompanyTurnover(150000000);
-		company.setCompanyWebsite("abc@def.com");
-		company.setStockExchange("NSE");
-		
-		boolean actual=companyServiceImpl.deleteCompany(company.getCompanyCode());
-		assertTrue(actual);	
-		
-		mockmvc.perform(MockMvcRequestBuilders.post("/api/v1.0/market/company/delete")
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isConflict());
-		
- }
- */
 }

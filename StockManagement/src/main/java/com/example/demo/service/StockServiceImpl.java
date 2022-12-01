@@ -24,9 +24,7 @@ public class StockServiceImpl implements StockService{
 	@Override
 	public boolean addStock(Stock stock) {
 		Date date = new Date();
-		//SimpleDateFormat DateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-		//String stringDate = DateFor.format(date);
-		stock.setTimestamp(date);
+			stock.setTimestamp(date);
 	
 		if(stockRepo.saveAndFlush(stock)!=null)
 		{

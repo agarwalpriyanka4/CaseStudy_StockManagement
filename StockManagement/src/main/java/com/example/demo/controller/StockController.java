@@ -39,13 +39,10 @@ public class StockController {
 		if(existObj!=null)
 		{
 			existObj.setLatestStockPrice(stock.getStockPrice());
-			//stock.setCompanyCode_fk(companyCode);
+			
 			if(companyService.updateCompany(existObj)& stockService.addStock(stock))
 			{
-				//Set<Stock> stockSet=(stockService.getStockList(companyCode));
-				//stockSet.add(stock);
-				//existObj.setStockList(stockSet);
-				//companyService.updateCompany(existObj);
+				
 				return new ResponseEntity<String>("Stock Details added and company also updated.", HttpStatus.CREATED);
 			}
 		}

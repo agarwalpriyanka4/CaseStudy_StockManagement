@@ -54,7 +54,7 @@ public class CompanyServiceTest {
 	 public void getCompanyDetails()
 	 {
 		 Company company=new Company();
-		 company.setCompanyCode(1); //expected
+		 company.setCompanyCode(1); 
 			company.setCompanyCEO("Peter");
 			company.setCompanyName("ABC");
 			company.setCompanyTurnover(150000000);
@@ -109,8 +109,6 @@ public class CompanyServiceTest {
 			company.setCompanyTurnover(150000000);
 			company.setCompanyWebsite("abc@def.com");
 			company.setStockExchange("NSE");
-			
-			//when(companyRepo.findById(any()).get()).thenReturn(company);
 			doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
 			Company actual=companyServiceImpl.getCompanyById(company.getCompanyCode());
 			assertEquals(company,actual);
@@ -122,8 +120,6 @@ public class CompanyServiceTest {
 	 {
 		 Company company=new Company();
 		 company.setCompanyCode(1);
-			
-			//when(companyRepo.findById(any()).get()).thenReturn(company);
 			doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
 			Company actual=companyServiceImpl.getCompanyById(company.getCompanyCode());
 			assertEquals(companyRepo.findById(company.getCompanyCode()).get(),actual);
@@ -149,7 +145,7 @@ public class CompanyServiceTest {
 	 public void deleteCompanyFail()
 	 {
 		 Company company=new Company();
-		 company.setCompanyCode(1); //expected
+		 company.setCompanyCode(1); 
 			boolean actual=companyServiceImpl.deleteCompany(company.getCompanyCode());
 			assertTrue(actual);
 	 }
@@ -158,7 +154,7 @@ public class CompanyServiceTest {
 	 public void updateCompany()
 	 {
 		 Company company=new Company();
-		 company.setCompanyCode(1); //expected
+		 company.setCompanyCode(1); 
 			company.setCompanyCEO("Peter");
 			company.setCompanyName("ABC");
 			company.setCompanyTurnover(150000000);

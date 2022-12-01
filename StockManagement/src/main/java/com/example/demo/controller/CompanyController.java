@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-//@SecurityRequirement(name="bearerAuth")
+
 @RequestMapping("api/v1.0/market")
 public class CompanyController {
 	
@@ -52,7 +52,6 @@ public class CompanyController {
     }
     	if(companyService.addCompanyDetails(company)!=null)
     	{
-    		//return new ResponseEntity<Company>(company, HttpStatus.CREATED);
     		return ResponseHandler.generateResponse("Company added successfully", HttpStatus.CREATED, company);
     	}
 		return new ResponseEntity<String>("Company Details already Exist", HttpStatus.CONFLICT);
@@ -66,15 +65,14 @@ public class CompanyController {
 		Company company=companyService.getCompanyById(companyCode);
 		if(company!=null)
 		{
-			//return new ResponseEntity<Company>(company, HttpStatus.OK);
-			//return ResponseHandler.generateResponse("Data retrieved for Company", HttpStatus.OK, company);
+			
 			CacheControl cacheObj= CacheControl.maxAge(24, TimeUnit.HOURS);
 			return ResponseEntity.ok().cacheControl(cacheObj)
 	            	.body(ResponseHandler.generateResponse("Data retrieved for Company", HttpStatus.OK, company));
 		}
 		else
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		//return new ResponseEntity<String>("Company Detail does not Exist", HttpStatus.NO_CONTENT);
+		
 	}
     
     @GetMapping("/company/info/getAll")
@@ -88,9 +86,7 @@ public class CompanyController {
             	Set<Stock> stockSet=stockService.getStockList(c.getCompanyCode());
             	c.setStockList(stockSet);
             }
-			//return new ResponseEntity<List<Company>>(companyList, HttpStatus.OK);
-           // return ResponseHandler.generateResponse("Data of all Companies",HttpStatus.OK , companyList);
-            
+			            
             CacheControl cacheObj= CacheControl.maxAge(24, TimeUnit.HOURS);
             return ResponseEntity.ok().cacheControl(cacheObj)
             	.body(ResponseHandler.generateResponse("Data of all Companies",HttpStatus.OK , companyList));
@@ -103,13 +99,13 @@ public class CompanyController {
     @DeleteMapping("/company/delete/{companyCode}")
     public ResponseEntity<?> deleteCompany(@PathVariable int companyCode)
 	{
-  //  if(stockService.deleteStock(companyCode) & companyService.deleteCompany(companyCode))
+  
     	if(companyService.deleteCompany(companyCode) & stockService.deleteStock(companyCode))
     {
     	return new ResponseEntity<String>("Company Detail deleted", HttpStatus.OK);
     }
     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-   // return new ResponseEntity<String>("Company Detail not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
+   
 	}
     
     @PutMapping("/company/put/{companyCode}")

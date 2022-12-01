@@ -13,7 +13,5 @@ import com.example.demo.model.Company;
 @Transactional
 public interface CompanyRepository extends JpaRepository<Company,Integer>{
 
-	//@Modifying
-	//@Query(value="delete stockList from Company c where c.companyCode= :companyCode")
-	//public void deleteStockList(int companyCode) ;
+
 }
