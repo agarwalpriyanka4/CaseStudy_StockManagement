@@ -37,7 +37,7 @@ public class AuthenticationController {
 		{
 			return new ResponseEntity<User>(userObj, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<String>("User already exist", HttpStatus.CONFLICT);
+		return new ResponseEntity<String>("User deatils not entered", HttpStatus.BAD_REQUEST);
 	}
 	
 	public String generateToken(String username, String password) throws ServletException,Exception

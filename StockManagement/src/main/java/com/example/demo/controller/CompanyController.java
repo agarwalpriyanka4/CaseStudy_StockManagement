@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,13 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.exceptions.CompanyAlreadyExistException;
 import com.example.demo.model.Company;
 import com.example.demo.model.Stock;
+import com.example.demo.response.ResponseHandler;
 import com.example.demo.service.CompanyService;
 import com.example.demo.service.StockService;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-//@"SecurityRequirement(value="=")
+//@SecurityRequirement(name="bearerAuth")
 @RequestMapping("api/v1.0/market")
 public class CompanyController {
 	
@@ -41,13 +45,15 @@ public class CompanyController {
     {
     	return new ResponseEntity<String>("No data found", HttpStatus.BAD_REQUEST);
     }
-    if(company.getCompanyCEO()==null || company.getCompanyName()==null || company.getCompanyTurnover()==null || company.getCompanyTurnover() <1000000000 || company.getCompanyWebsite()==null || company.getStockExchange()==null)
+    if(company.getCompanyCEO()==null || company.getCompanyName()==null || company.getCompanyTurnover()==null || company.getCompanyTurnover() <100000000 || company.getCompanyWebsite()==null || company.getStockExchange()==null)
     {
-    	return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+    	
+    	return new ResponseEntity<String>("Some data missing", HttpStatus.BAD_REQUEST);
     }
     	if(companyService.addCompanyDetails(company)!=null)
     	{
-    		return new ResponseEntity<Company>(company, HttpStatus.CREATED);
+    		//return new ResponseEntity<Company>(company, HttpStatus.CREATED);
+    		return ResponseHandler.generateResponse("Company added successfully", HttpStatus.CREATED, company);
     	}
 		return new ResponseEntity<String>("Company Details already Exist", HttpStatus.CONFLICT);
     	
@@ -60,7 +66,11 @@ public class CompanyController {
 		Company company=companyService.getCompanyById(companyCode);
 		if(company!=null)
 		{
-			return new ResponseEntity<Company>(company, HttpStatus.OK);
+			//return new ResponseEntity<Company>(company, HttpStatus.OK);
+			//return ResponseHandler.generateResponse("Data retrieved for Company", HttpStatus.OK, company);
+			CacheControl cacheObj= CacheControl.maxAge(24, TimeUnit.HOURS);
+			return ResponseEntity.ok().cacheControl(cacheObj)
+	            	.body(ResponseHandler.generateResponse("Data retrieved for Company", HttpStatus.OK, company));
 		}
 		else
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -78,7 +88,12 @@ public class CompanyController {
             	Set<Stock> stockSet=stockService.getStockList(c.getCompanyCode());
             	c.setStockList(stockSet);
             }
-			return new ResponseEntity<List<Company>>(companyList, HttpStatus.OK);
+			//return new ResponseEntity<List<Company>>(companyList, HttpStatus.OK);
+           // return ResponseHandler.generateResponse("Data of all Companies",HttpStatus.OK , companyList);
+            
+            CacheControl cacheObj= CacheControl.maxAge(24, TimeUnit.HOURS);
+            return ResponseEntity.ok().cacheControl(cacheObj)
+            	.body(ResponseHandler.generateResponse("Data of all Companies",HttpStatus.OK , companyList));
 		}
 		return new ResponseEntity<String>("Company Details does not Exist", HttpStatus.NO_CONTENT);
     	

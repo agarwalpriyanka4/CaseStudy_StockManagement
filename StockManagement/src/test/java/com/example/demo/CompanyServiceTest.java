@@ -1,11 +1,17 @@
 package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +54,7 @@ public class CompanyServiceTest {
 	 public void getCompanyDetails()
 	 {
 		 Company company=new Company();
-		 company.setCompanyCode(1);
+		 company.setCompanyCode(1); //expected
 			company.setCompanyCEO("Peter");
 			company.setCompanyName("ABC");
 			company.setCompanyTurnover(150000000);
@@ -57,7 +63,7 @@ public class CompanyServiceTest {
 			
 			companyList.add(company);
 			when(companyRepo.findAll()).thenReturn(companyList);
-			List<Company> list1=companyServiceImpl.getCompanyDetails();
+			List<Company> list1=companyServiceImpl.getCompanyDetails();//actual
 		assertEquals(companyList,list1);
 	 }
 	 
@@ -93,5 +99,84 @@ public class CompanyServiceTest {
 			assertNull(actual);
 	 }
 	 
+	 @Test
+	 public void getCompanyById()
+	 {
+		 Company company=new Company();
+		 company.setCompanyCode(1); //expected
+			company.setCompanyCEO("Peter");
+			company.setCompanyName("ABC");
+			company.setCompanyTurnover(150000000);
+			company.setCompanyWebsite("abc@def.com");
+			company.setStockExchange("NSE");
+			
+			//when(companyRepo.findById(any()).get()).thenReturn(company);
+			doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
+			Company actual=companyServiceImpl.getCompanyById(company.getCompanyCode());
+			assertEquals(company,actual);
+			
+	 }
 	 
+	 @Test
+	 public void getCompanyByIdFail()
+	 {
+		 Company company=new Company();
+		 company.setCompanyCode(1);
+			
+			//when(companyRepo.findById(any()).get()).thenReturn(company);
+			doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
+			Company actual=companyServiceImpl.getCompanyById(company.getCompanyCode());
+			assertEquals(companyRepo.findById(company.getCompanyCode()).get(),actual);
+			
+	 }
+	 
+	 @Test
+	 public void deleteCompany()
+	 {
+		 Company company=new Company();
+		 company.setCompanyCode(1); //expected
+			company.setCompanyCEO("Peter");
+			company.setCompanyName("ABC");
+			company.setCompanyTurnover(150000000);
+			company.setCompanyWebsite("abc@def.com");
+			company.setStockExchange("NSE");
+			
+			boolean actual=companyServiceImpl.deleteCompany(company.getCompanyCode());
+			assertTrue(actual);	
+	 }
+	 
+	 @Test
+	 public void deleteCompanyFail()
+	 {
+		 Company company=new Company();
+		 company.setCompanyCode(1); //expected
+			boolean actual=companyServiceImpl.deleteCompany(company.getCompanyCode());
+			assertTrue(actual);
+	 }
+	 
+	 @Test
+	 public void updateCompany()
+	 {
+		 Company company=new Company();
+		 company.setCompanyCode(1); //expected
+			company.setCompanyCEO("Peter");
+			company.setCompanyName("ABC");
+			company.setCompanyTurnover(150000000);
+			company.setCompanyWebsite("abc@def.com");
+			company.setStockExchange("NSE");
+			doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
+			when(companyRepo.saveAndFlush(company)).thenReturn(company);
+			boolean actual=companyServiceImpl.updateCompany(company);
+			assertTrue(actual);	
+	 }
+	 
+	 @Test
+	 public void updateCompanyFail()
+	 {
+		 Company company=new Company();
+		 doReturn(Optional.of(company)).when(companyRepo).findById(company.getCompanyCode());
+			when(companyRepo.saveAndFlush(company)).thenReturn(company);
+			boolean actual=companyServiceImpl.updateCompany(company);
+			assertTrue(actual);	
+	 }
 }
